@@ -1,0 +1,146 @@
+body {
+	font-family: Verdana, sans-serif;
+	margin: 0px;
+	padding: 0px;
+}
+
+main, header, footer {
+	padding: 0 10% 0 10%;
+}
+
+#logo {
+	height: 100%;
+}
+
+header, footer {
+	background-color: rgb(130, 200, 130);
+}
+
+header {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	height: 100px;
+}
+
+header div {
+	margin-left: 50px;
+}
+
+.logo {
+	height: 100%;
+}
+
+header a {
+	font-size: 20px;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+}
+
+.overview {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	margin-bottom: 70px;
+}
+
+.path {
+	padding-left: 40px;
+}
+
+.pic a img{
+	width: 100%;
+}
+
+.pic {
+	width: 50%;
+}
+
+.prod {
+	display: flex;
+	flex-direction: column;
+	margin-left: 10%;
+	width: 40%;
+}
+
+.in_prod {
+	margin-bottom: 30px;
+}
+
+.id {
+	font-size: 15px;
+	color: rgba(0,0,0,0.5);
+}
+
+.price {
+	font-size: 40px;
+	font-family: Lucida Console, Monaco;
+}
+
+.buy {
+	display: flex;
+	justify-content: space-between;
+	height: 8%;
+	margin-bottom: 100px;
+}
+
+.buy button{
+	font-size: 20px;
+	width: 47%;
+}
+
+.tobasket {
+	background-color: green;
+	color: white;
+	border-color: white;
+}
+
+.buynow {
+	background-color: white;
+	color: green;
+	border-color: green;
+}
+
+.menu {
+	display: flex;
+}
+
+.menu div {
+	margin-left: 20px;
+}
+
+.desc_main {
+	line-height: 30px;
+}
+
+.spec_main {
+	display: flex;
+	font-size: 20px;
+}
+
+.spec_main ul:first-child {
+	margin-right: 100px;
+}
+
+.spec_main li {
+	margin-bottom: 10px;
+}
+
+.spec_main i {
+	color: blue;
+}
+
+.answ {
+	color: rgba(0,0,0,0.5);
+}
+
+footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: rgb(130, 200, 130);
+	height: 100px;
+}
