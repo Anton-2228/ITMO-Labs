@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="utf-8" />
+    <h:outputStylesheet library="css" name="style.css" />
+    <title>Lab3</title>
+</h:head>
+<h:body>
+<table id="body">
+    <tr>
+        <td>
+            <table id="header">
+                <tr>
+                    <td><p>Группа: P3206</p></td>
+                    <td><p id="name">Зинченко Антон Андреевич</p></td>
+                    <td><p>Вариант: 1818</p></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <h:form action="" method="post" onsubmit="return false" id="form">
+        <tr>
+            <td>
+                <table id="main">
+                    <tr>
+                        <td class="field">
+                            <p>Координата X:</p>
+                            <div id="x-block">
+                                <p:slider for="x" minValue="-3" maxValue="3" step="0.5" />
+                                <h:inputText id="x" value="#{ManBean.x}">
+                                    <f:validateRequired/>
+                                    <f:validateDoubleRange minimum="-3" maximum="3"/>
+                                </h:inputText>
+                            </div>
+                        </td>
+                        <td rowspan="3" colspan="2">
+                            <canvas height="500" width="500" id="graph"></canvas>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="field">
+                            <p>Координата Y:</p>
+                            <h:inputText id="y" value="#{ManBean.y}">
+                                <f:validateRequired/>
+                                <f:validateDoubleRange minimum="-3" maximum="3"/>
+                            </h:inputText>
+                            <p id="y_error"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="field">
+                            <p>Значение R:</p>
+                            <h:inputText id="r" value="#{ManBean.r}">
+                                <f:validateRequired/>
+                                <f:validateDoubleRange minimum="1" maximum="4"/>
+                            </h:inputText>
+                            <p id="r_error"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p id="serverError"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p:commandButton id="submit" value="Отправить" onclick="validateValues()">
+                                <f:ajax execute="x y r" listener="#{ManBean.get_point()}" render="resTable draw_hits" />
+                            </p:commandButton>
+                            <p:commandButton id="homePageLink" action="start.xhtml?faces-redirect=true" value="Go to start"/>
+                            <h:inputHidden id="can_x" value="#{ManBean.x}" />
+                            <h:inputHidden id="can_y" value="#{ManBean.y}" />
+                            <h:commandButton class="submit_canv" id="submit_canv" onclick="validateValues()">
+                                <f:ajax execute="can_x can_y r" listener="#{ManBean.get_point()}" render="resTable draw_hits" />
+                            </h:commandButton>
+                            <h:commandButton class="submit_canv" id="draw_canv">
+                                <f:ajax execute="r" render="draw_hits" />
+                            </h:commandButton>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td id="cellResTable">
+                <h:dataTable class="result-table" id="resTable" var="hit" value="#{ManBean.array}">
+                    <h:column>
+                        <f:facet name="header">R</f:facet>
+                        #{hit.r}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">X</f:facet>
+                        #{hit.x}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Y</f:facet>
+                        #{hit.y}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Текущее время</f:facet>
+                        #{hit.time}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Время выполнения</f:facet>
+                        #{hit.runTime}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Результат</f:facet>
+                        #{hit.result}
+                    </h:column>
+                </h:dataTable>
+            </td>
+        </tr>
+    </h:form>
+</table>
+    <h:outputScript library="js" name="script.js" />
+    <p:outputPanel id="draw_hits">
+        <script>
+            drawCanvas();
+            <ui:repeat id="draw" value="#{ManBean.array}" var="hit">
+                draw_point(#{hit.x}, #{hit.y}, #{hit.r}, #{hit.result});
+            </ui:repeat>
+            end_draw();
+        </script>
+    </p:outputPanel>
+    <p:outputPanel>
+        <script>
+            window.onload = function () {
+                start();
+
+                let r = document.getElementById("form:r");
+                r.addEventListener('change', (e) => {
+                    document.getElementById("form:draw_canv").click();
+                    let rVal = document.getElementById("form:r").value;
+                    let rError = document.getElementById("r_error");
+                    let r_ret = validateR(rVal);
+                    rError.innerText = r_ret;
+                })
+
+                let y = document.getElementById("form:y");
+                y.addEventListener('change', (e) => {
+                    let yVal = document.getElementById("form:y").value;
+                    let yError = document.getElementById("y_error");
+                    let y_ret = validateY(yVal);
+                    yError.innerText = y_ret;
+                })
+
+                drawCanvas();
+                <ui:repeat value="#{ManBean.array}" var="hit">
+                    draw_point(#{hit.x}, #{hit.y}, #{hit.r}, #{hit.result});
+                </ui:repeat>
+                end_draw();
+            }
+        </script>
+    </p:outputPanel>
+</h:body>
+</html>
